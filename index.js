@@ -175,7 +175,15 @@ export class MixpanelInstance {
   }
 
   // android only
-  clearPushRegistrationId(): Promise<void> {
+  clearPushRegistrationId(token: string): Promise<void> {
+    if (!this.initialized) throw new Error(uninitializedError('clearPushRegistrationId'))
+
+    if (!RNMixpanel.clearPushRegistrationId) throw new Error('No native implementation for setPusclearPushRegistrationIdhRegistrationId.  This is Android only.')
+    return RNMixpanel.clearPushRegistrationId(token, this.apiToken)
+  }
+
+  // android only
+  clearAllPushRegistrationIds(): Promise<void> {
     if (!this.initialized) throw new Error(uninitializedError('clearPushRegistrationId'))
 
     if (!RNMixpanel.clearPushRegistrationId) throw new Error('No native implementation for setPusclearPushRegistrationIdhRegistrationId.  This is Android only.')
@@ -356,10 +364,10 @@ export default {
   },
 
   // android only
-  clearPushRegistrationId() {
+  clearPushRegistrationId(token: string) {
     if (!defaultInstance) throw new Error(NO_INSTANCE_ERROR)
 
-    defaultInstance.clearPushRegistrationId()
+    defaultInstance.clearPushRegistrationId(token)
   },
 
   reset() {
